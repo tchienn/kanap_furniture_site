@@ -1,5 +1,3 @@
-console.log("Hello world!");
-
 const data = [
   {
     colors: ["Blue", "White", "Black"],
@@ -87,21 +85,32 @@ const productsContainer = document.getElementById("items");
 
 // array method
 data.forEach((product) => {
-  // step 1: create a link element w/ attribute
+  // step 1: create a link element w/ [href]
   const productLink = document.createElement("a");
   productLink.setAttribute("href", product._id);
   // step 2: create a container article for image, title, and description
   const containerArticle = document.createElement("article");
-  // step 3: create an image element w/ alt
+  // step 3: create an image element w/ [alt]
   const productImg = document.createElement("img");
   productImg.src = product.imageUrl;
   productImg.setAttribute("alt", product.altTxt);
-  console.log(productImg);
-  // step 4: create a heading element
-  // step 5: create a paragraph element
-  // step 6: append paragrraph to div
-  // step 7: append heading to div
-  // step 8: append image to div
+  // step 4: create a heading element w/ a class
+  const productHeading = document.createElement("h3");
+  productHeading.classList.add("productName");
+  productHeading.textContent = product.name;
+  // step 5: create a paragraph element w/ a class
+  const productDescription = document.createElement("p");
+  productDescription.classList.add("productDescription");
+  productDescription.textContent = product.description;
+  console.log(productDescription);
+  // step 6: append image to article
+  containerArticle.appendChild(productImg);
+  // step 7: append heading to article
+  containerArticle.appendChild(productHeading);
+  // step 8: append paragraph to article
+  containerArticle.appendChild(productDescription);
   // step 9: append div to link
-  // step 10: append div to product container
+  productLink.appendChild(containerArticle);
+  // step 10: append link to product container
+  productsContainer.appendChild(productLink);
 });
