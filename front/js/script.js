@@ -18,34 +18,16 @@ const productsContainer = document.getElementById("items");
 
 // Iterate over each element in the JSON array from API
 function insertProducts(products) {
-  // Get the current product
+  let html = ""; // Create empty string
   products.forEach((product) => {
-    // Create a link element
-    const productLink = document.createElement("a");
-    productLink.setAttribute("href", product._id);
-    // Create a new DOM card element using article tag that will be inserted into home page
-    const containerArticle = document.createElement("article");
-    // Create an image element w/ [alt]
-    const productImg = document.createElement("img");
-    productImg.src = product.imageUrl;
-    productImg.setAttribute("alt", product.altTxt);
-    // Create a heading element w/ class
-    const productHeading = document.createElement("h3");
-    productHeading.classList.add("productName");
-    productHeading.textContent = product.name;
-    // Create a paragraph element w/ class
-    const productDescription = document.createElement("p");
-    productDescription.classList.add("productDescription");
-    productDescription.textContent = product.description;
-    // Append img to article
-    containerArticle.appendChild(productImg);
-    // Append heading to article
-    containerArticle.appendChild(productHeading);
-    // Append paragraph to article
-    containerArticle.appendChild(productDescription);
-    // Append div to link
-    productLink.appendChild(containerArticle);
-    // Append link to product container
-    productsContainer.appendChild(productLink);
+    // Get the current product and concatenate HTML strings to empty 'html' string in each iteration of the loop
+    html += `<a href="${product._id}"> 
+        <article>
+            <img src="${product.imageUrl}" alt="${product.altTxt}">
+            <h3 class="productName">${product.name}</h3>
+            <p class="productDescription">${product.description}</p>
+        </article>
+    </a>`;
   });
+  productsContainer.innerHTML = html; // Set the 'innerHTML' of 'productsContainer' to the empty html string to avoid needing to create individual DOM elements
 }
