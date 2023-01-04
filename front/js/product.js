@@ -52,9 +52,21 @@ addToCart.addEventListener("click", () => {
   color = document.getElementById("colors");
   colorSelected = color.value; // Gets color value input by user
   console.log(colorSelected);
+
+  // Checks conditions of cart that manipulates array based on user input
+  if (colorSelected !== "" && quantitySelected > 0 && quantitySelected <= 100) {
+    let cart = {
+      cartProductId: productId,
+      cartProductQuantity: quantitySelected,
+      cartColor: colorSelected,
+    };
+    console.log(cart);
+    else {
+        
+    }
+  }
 });
 
-// TODO: build cart as an array with product ID, quantity of product, and colour of product
 // TODO: prevent default behaviour in event listener?
 // TODO: use LocalStorage to access this array from product page
 // TODO: write a conditional that manipulates array based on user input
