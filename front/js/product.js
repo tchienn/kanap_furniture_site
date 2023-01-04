@@ -1,3 +1,4 @@
+// URLSearchParams
 const queryString = window.location.search; // Returns the entire parameter sting ?id=415b7cacb65d43b2b5c1ff70f3393ad1
 const urlParams = new URLSearchParams(queryString); // An object that allows me to manipulate a string using methods
 const productId = urlParams.get("id"); // Get product ID from string
@@ -34,3 +35,26 @@ fetch(uri)
       select.appendChild(colorOption); // Appends color list to dropdown
     });
   });
+
+// Add products to cart
+const addToCart = document.getElementById("addToCart"); // Gets 'add to cart' button
+let quantity;
+let quantitySelected;
+let color;
+let colorSelected;
+
+// Listens to click event and stores product values as a variable
+addToCart.addEventListener("click", () => {
+  quantity = document.getElementById("quantity");
+  quantitySelected = quantity.value; // Gets quantity value input by user
+  console.log(quantitySelected);
+
+  color = document.getElementById("colors");
+  colorSelected = color.value; // Gets color value input by user
+  console.log(colorSelected);
+});
+
+// TODO: build cart as an array with product ID, quantity of product, and colour of product
+// TODO: prevent default behaviour in event listener?
+// TODO: use LocalStorage to access this array from product page
+// TODO: write a conditional that manipulates array based on user input
