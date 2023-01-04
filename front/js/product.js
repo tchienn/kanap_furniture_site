@@ -61,9 +61,7 @@ addToCart.addEventListener("click", () => {
       cartColor: colorSelected,
     };
     console.log(cart);
-    else {
-        
-    }
+    // Local storage
   }
 });
 
