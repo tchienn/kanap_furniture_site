@@ -1,5 +1,7 @@
 // Fetch JSON array by making HTTP GET request to API endpoint
-fetch("http://localhost:3000/api/products")
+const uri = "http://localhost:3000/api/products";
+
+fetch(uri)
   .then((data) => {
     return data.json();
   })
