@@ -67,4 +67,9 @@ addToCart.addEventListener("click", () => {
 
 // TODO: prevent default behaviour in event listener?
 // TODO: use LocalStorage to access this array from product page
-// TODO: write a conditional that manipulates array based on user input
+
+// TODO: create function  that creates pulldown menu from object
+// TODO: add event listener to addToCart btn
+// TODO: attach function to check if the product is already in cart - no duplicates
+// TODO: handle that function accordingly using a conditional - hardest concept on this page
+// TODO: keep localStorage cart synced to cart array on this page
