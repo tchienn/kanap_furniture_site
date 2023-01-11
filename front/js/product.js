@@ -38,12 +38,23 @@ fetch(uri)
 
 // Add products to cart
 const addToCart = document.getElementById("addToCart"); // Gets 'add to cart' button
-let color; // const?
+let color; // Declares undefined variable to be assigned in the function
 let quantity;
 
+// Loop to determine if new cart item already exists in stored cart and update cart accordingly
 function updateStoredCart(storedCart, cartItem) {
-  storedCart.push(cartItem);
-  // TODO: Write conditional that pushes an item to cart array if color and ID match, otherwise, increase item quantity in object
+  for (let i = 0; i < storedCart.length; i++) {
+    if (
+      cartItem.cartProductColor == storedCart[i].cartProductColor &&
+      cartItem.cartProductId == storedCart[i].cartProductId
+    ) {
+      storedCart[i].cartProductQuantity =
+        parseInt(storedCart[i].cartProductQuantity) + // Converts to integer (due to localStorage bug)
+        parseInt(cartItem.cartProductQuantity); // Adds to product quantity because item already exists in cart
+      return; // Ends function, task is complete
+    }
+  }
+  storedCart.push(cartItem); // Push new item to the array
 }
 
 // Listens to click event and stores product values as a variable
@@ -63,19 +74,12 @@ addToCart.addEventListener("click", () => {
 
   if (storedCart == null) {
     // When nothing in cart, item added will be first in array
-    localStorage.setItem("cart", JSON.stringify([cartItem]));
+    localStorage.setItem("cart", JSON.stringify([cartItem])); // Converts back to readable string
   } else {
     // Appends new cartItem object to array or increases quantity of existing object
     updateStoredCart(storedCart, cartItem);
-    //call fn here instead of line above
     localStorage.setItem("cart", JSON.stringify(storedCart));
   }
 
   console.log(storedCart);
-
-  // fn input storedcart output stored cart
 });
-
-// TODO: attach function to check if the product is already in cart - no duplicates
-// TODO: handle that function accordingly using a conditional
-// TODO: keep localStorage cart synced to cart array on this page
