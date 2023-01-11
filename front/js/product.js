@@ -38,38 +38,44 @@ fetch(uri)
 
 // Add products to cart
 const addToCart = document.getElementById("addToCart"); // Gets 'add to cart' button
+let color; // const?
 let quantity;
-let quantitySelected;
-let color;
-let colorSelected;
+
+function updateStoredCart(storedCart, cartItem) {
+  storedCart.push(cartItem);
+  // TODO: Write conditional that pushes an item to cart array if color and ID match, otherwise, increase item quantity in object
+}
 
 // Listens to click event and stores product values as a variable
 addToCart.addEventListener("click", () => {
   quantity = document.getElementById("quantity");
-  quantitySelected = quantity.value; // Gets quantity value input by user
-  console.log(quantitySelected);
-
   color = document.getElementById("colors");
-  colorSelected = color.value; // Gets color value input by user
-  console.log(colorSelected);
 
-  // Checks conditions of cart that manipulates array based on user input
-  if (colorSelected !== "" && quantitySelected > 0 && quantitySelected <= 100) {
-    let cart = {
-      cartProductId: productId,
-      cartProductQuantity: quantitySelected,
-      cartColor: colorSelected,
-    };
-    console.log(cart);
-    // Local storage
+  // Creates object representing each item that will append to cart array
+  let cartItem = {
+    cartProductId: productId,
+    cartProductColor: color.value,
+    cartProductQuantity: quantity.value,
+  };
+
+  // Add items to local storage
+  let storedCart = JSON.parse(localStorage.getItem("cart")); // An array of cartItem objects
+
+  if (storedCart == null) {
+    // When nothing in cart, item added will be first in array
+    localStorage.setItem("cart", JSON.stringify([cartItem]));
+  } else {
+    // Appends new cartItem object to array or increases quantity of existing object
+    updateStoredCart(storedCart, cartItem);
+    //call fn here instead of line above
+    localStorage.setItem("cart", JSON.stringify(storedCart));
   }
+
+  console.log(storedCart);
+
+  // fn input storedcart output stored cart
 });
 
-// TODO: prevent default behaviour in event listener?
-// TODO: use LocalStorage to access this array from product page
-
-// TODO: create function  that creates pulldown menu from object
-// TODO: add event listener to addToCart btn
 // TODO: attach function to check if the product is already in cart - no duplicates
-// TODO: handle that function accordingly using a conditional - hardest concept on this page
+// TODO: handle that function accordingly using a conditional
 // TODO: keep localStorage cart synced to cart array on this page
