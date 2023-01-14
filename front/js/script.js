@@ -2,12 +2,13 @@
 const uri = "http://localhost:3000/api/products";
 
 fetch(uri)
-  .then((data) => {
-    return data.json();
+  .then((res) => {
+    return res.json(); //
   })
   .then((products) => {
     insertProducts(products);
-  });
+  })
+  .catch((err) => console.error(err)); // Handle error
 
 // Iterate over each element in the JSON array from API
 function insertProducts(products) {

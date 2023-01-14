@@ -7,34 +7,37 @@ const uri = "http://localhost:3000/api/products/" + productId; // Gets relevant 
 
 // Fetch product information object from API
 fetch(uri)
-  .then((data) => {
-    return data.json();
+  .then((res) => {
+    return res.json();
   })
-  .then((product) => {
-    const imgContainer = document.getElementsByClassName("item__img")[0]; // Accesses first element in HTML collection
-    const productImg = document.createElement("img");
-    productImg.src = product.imageUrl;
-    productImg.setAttribute("alt", product.altTxt);
-    imgContainer.appendChild(productImg);
+  .then((product) => createProduct(product))
+  .catch((err) => console.error(err));
 
-    const productHeading = document.getElementById("title");
-    productHeading.textContent = product.name;
+function createProduct(product) {
+  const imgContainer = document.getElementsByClassName("item__img")[0]; // Accesses first element in HTML collection
+  const productImg = document.createElement("img");
+  productImg.src = product.imageUrl;
+  productImg.setAttribute("alt", product.altTxt);
+  imgContainer.appendChild(productImg);
 
-    const productPrice = document.getElementById("price");
-    productPrice.textContent = product.price;
+  const productHeading = document.getElementById("title");
+  productHeading.textContent = product.name;
 
-    const productDescription = document.getElementById("description");
-    productDescription.textContent = product.description;
+  const productPrice = document.getElementById("price");
+  productPrice.textContent = product.price;
 
-    // Loop to select product color from array
-    product.colors.forEach((color) => {
-      const select = document.getElementById("colors"); // Gets dropdown select element
-      const colorOption = document.createElement("option");
-      colorOption.value = color; // Assigns color from array to option element
-      colorOption.textContent = color;
-      select.appendChild(colorOption); // Appends color list to dropdown
-    });
+  const productDescription = document.getElementById("description");
+  productDescription.textContent = product.description;
+
+  // Loop to select product color from array
+  product.colors.forEach((color) => {
+    const select = document.getElementById("colors"); // Gets dropdown select element
+    const colorOption = document.createElement("option");
+    colorOption.value = color; // Assigns color from array to option element
+    colorOption.textContent = color;
+    select.appendChild(colorOption); // Appends color list to dropdown
   });
+}
 
 // Add products to cart
 const addToCart = document.getElementById("addToCart"); // Gets 'add to cart' button

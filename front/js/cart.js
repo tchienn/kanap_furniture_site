@@ -19,8 +19,8 @@ localStorageCart.forEach((cartItem) => {
 
   // Fetch product information object from API
   fetch(uri)
-    .then((data) => {
-      return data.json();
+    .then((res) => {
+      return res.json();
     })
 
     .then((product) => {
@@ -54,7 +54,7 @@ localStorageCart.forEach((cartItem) => {
       productContentDiv.appendChild(productHeading);
 
       const productColor = document.createElement("p");
-      productColor.innerHTML += `<option value="${product.color}">${product.colors}</option>`;
+      productColor.innerHTML += `<option value="${cartItem.cartProductColor}">${cartItem.cartProductColor}</option>`; // LOCALSTORAGE NAME
       productContentDiv.appendChild(productColor);
 
       const productPrice = document.createElement("p");
@@ -74,7 +74,8 @@ localStorageCart.forEach((cartItem) => {
       productSettingsQuantityDiv.appendChild(productQuantity);
 
       const productQuantityInput = document.createElement("input");
-      productQuantityInput.setAttribute("type", "quantity.value");
+      productQuantityInput.setAttribute("type", "number");
+      productQuantityInput.setAttribute("value", cartItem.cartProductQuantity);
       productSettingsQuantityDiv.appendChild(productQuantityInput);
       productQuantity.setAttribute("min", "1"); // Sets minimum and maximum quantity
       productQuantity.setAttribute("max", "100");
@@ -87,5 +88,6 @@ localStorageCart.forEach((cartItem) => {
       deleteItem.classList.add("deleteItem");
       deleteItem.textContent = "Delete";
       deleteItemDiv.appendChild(deleteItem);
-    });
+    })
+    .catch((err) => console.error(err));
 });
