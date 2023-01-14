@@ -1,7 +1,7 @@
 // TODO: [X] get cart data from localStorage
 // TODO: [X] turn the JSON into JS obj array
 // TODO: [X] create functions that iterate over the data for loops to build and append cards to the DOM
-// TODO: [] each cart item must have product, option, quantity, remove btn
+// TODO: [X] each cart item must have product, option, quantity, remove btn
 // TODO: [] contact form gathers customer info
 // TODO: [] order now btn has eventListener that gets data, creates request body, POSTs to server, on success handle response and navigate to order confirmation page - window.location
 
@@ -23,71 +23,73 @@ localStorageCart.forEach((cartItem) => {
       return res.json();
     })
 
-    .then((product) => {
-      // Accesses first element in HTML collection
-      const cartContainer = document.getElementById("cart__items");
-      // Adding <article>
-      const productArticle = document.createElement("article");
-      productArticle.classList.add("cart__item");
-      productArticle.setAttribute("data-id", product.id);
-      cartContainer.appendChild(productArticle);
-
-      const productImgDiv = document.createElement("div");
-      productImgDiv.classList.add("cart__item__img");
-      productArticle.appendChild(productImgDiv);
-
-      const productCartImg = document.createElement("img");
-      productCartImg.src = product.imageUrl;
-      productCartImg.setAttribute("alt", product.altTxt);
-      productImgDiv.appendChild(productCartImg);
-
-      const productContentDiv = document.createElement("div");
-      productContentDiv.classList.add("cart__item__content");
-      productArticle.appendChild(productContentDiv);
-
-      const productDescriptionDiv = document.createElement("div");
-      productDescriptionDiv.classList.add("cart__item__content__description");
-      productContentDiv.appendChild(productDescriptionDiv);
-
-      const productHeading = document.createElement("h2");
-      productHeading.textContent = product.name;
-      productContentDiv.appendChild(productHeading);
-
-      const productColor = document.createElement("p");
-      productColor.innerHTML += `<option value="${cartItem.cartProductColor}">${cartItem.cartProductColor}</option>`; // LOCALSTORAGE NAME
-      productContentDiv.appendChild(productColor);
-
-      const productPrice = document.createElement("p");
-      productPrice.textContent = product.price;
-      productContentDiv.appendChild(productPrice);
-
-      const productSettingsDiv = document.createElement("div");
-      productSettingsDiv.classList.add("cart__item__content__settings");
-      productArticle.appendChild(productSettingsDiv);
-
-      const productSettingsQuantityDiv = document.createElement("div");
-      productSettingsQuantityDiv.classList.add("cart__item__content__settings");
-      productSettingsDiv.appendChild(productSettingsQuantityDiv);
-
-      const productQuantity = document.createElement("p");
-      productQuantity.textContent = "Quantity :";
-      productSettingsQuantityDiv.appendChild(productQuantity);
-
-      const productQuantityInput = document.createElement("input");
-      productQuantityInput.setAttribute("type", "number");
-      productQuantityInput.setAttribute("value", cartItem.cartProductQuantity);
-      productSettingsQuantityDiv.appendChild(productQuantityInput);
-      productQuantity.setAttribute("min", "1"); // Sets minimum and maximum quantity
-      productQuantity.setAttribute("max", "100");
-
-      const deleteItemDiv = document.createElement("div");
-      deleteItemDiv.classList.add("cart__item__content__settings__delete");
-      productSettingsDiv.appendChild(deleteItemDiv);
-
-      const deleteItem = document.createElement("p");
-      deleteItem.classList.add("deleteItem");
-      deleteItem.textContent = "Delete";
-      deleteItemDiv.appendChild(deleteItem);
-    })
+    .then((product) => addItemToCartPage(product, cartItem))
     .catch((err) => console.error(err));
 });
+
+function addItemToCartPage(product, cartItem) {
+  // Accesses first element in HTML collection
+  const cartContainer = document.getElementById("cart__items");
+  // Adding <article>
+  const productArticle = document.createElement("article");
+  productArticle.classList.add("cart__item");
+  productArticle.setAttribute("data-id", product.id);
+  cartContainer.appendChild(productArticle);
+
+  const productImgDiv = document.createElement("div");
+  productImgDiv.classList.add("cart__item__img");
+  productArticle.appendChild(productImgDiv);
+
+  const productCartImg = document.createElement("img");
+  productCartImg.src = product.imageUrl;
+  productCartImg.setAttribute("alt", product.altTxt);
+  productImgDiv.appendChild(productCartImg);
+
+  const productContentDiv = document.createElement("div");
+  productContentDiv.classList.add("cart__item__content");
+  productArticle.appendChild(productContentDiv);
+
+  const productDescriptionDiv = document.createElement("div");
+  productDescriptionDiv.classList.add("cart__item__content__description");
+  productContentDiv.appendChild(productDescriptionDiv);
+
+  const productHeading = document.createElement("h2");
+  productHeading.textContent = product.name;
+  productContentDiv.appendChild(productHeading);
+
+  const productColor = document.createElement("p");
+  productColor.innerHTML += `<option value="${cartItem.cartProductColor}">${cartItem.cartProductColor}</option>`;
+  productContentDiv.appendChild(productColor);
+
+  const productPrice = document.createElement("p");
+  productPrice.textContent = `${product.price}€`;
+  productContentDiv.appendChild(productPrice);
+
+  const productSettingsDiv = document.createElement("div");
+  productSettingsDiv.classList.add("cart__item__content__settings");
+  productArticle.appendChild(productSettingsDiv);
+
+  const productSettingsQuantityDiv = document.createElement("div");
+  productSettingsQuantityDiv.classList.add("cart__item__content__settings");
+  productSettingsDiv.appendChild(productSettingsQuantityDiv);
+
+  const productQuantity = document.createElement("p");
+  productQuantity.textContent = "Quantity :";
+  productSettingsQuantityDiv.appendChild(productQuantity);
+
+  const productQuantityInput = document.createElement("input");
+  productQuantityInput.setAttribute("type", "number");
+  productQuantityInput.setAttribute("value", cartItem.cartProductQuantity);
+  //   productQuantity.setAttribute("min", "1"); // Sets minimum and maximum quantity
+  //   productQuantity.setAttribute("max", "100");
+  productSettingsQuantityDiv.appendChild(productQuantityInput);
+
+  const deleteItemDiv = document.createElement("div");
+  deleteItemDiv.classList.add("cart__item__content__settings__delete");
+  productSettingsDiv.appendChild(deleteItemDiv);
+
+  const deleteItem = document.createElement("p");
+  deleteItem.classList.add("deleteItem");
+  deleteItem.textContent = "Delete";
+  deleteItemDiv.appendChild(deleteItem);
+}
