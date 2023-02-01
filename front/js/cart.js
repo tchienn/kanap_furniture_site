@@ -1,9 +1,4 @@
-// TODO: [X] get cart data from localStorage
-// TODO: [X] turn the JSON into JS obj array
-// TODO: [X] create functions that iterate over the data for loops to build and append cards to the DOM
-// TODO: [] each cart item must have a functional product, option, quantity, remove btn
-// TODO: [] contact form gathers customer info
-// TODO: [] order now btn has eventListener that gets data, creates request body, POSTs to server, on success handle response and navigate to order confirmation page - window.location
+//TODO: [] Make sure delete button deletes item from page instead of just local storage
 
 // Gets cart data from local storage
 const localStorageCart = JSON.parse(localStorage.getItem("cart"));
@@ -85,14 +80,7 @@ function addItemToCartPage(product, cartItem) {
   productQuantity.setAttribute("max", "100");
   productQuantityInput.setAttribute("value", cartItem.cartProductQuantity);
   productSettingsQuantityDiv.appendChild(productQuantityInput);
-  productQuantityInput.addEventListener("change", ($event) => {
-    let storedCart = JSON.parse(localStorage.getItem("cart")); // An array of cartItem objects
-    storedCart.find(
-      // this works like a for if statement !
-      (product) => product.cartProductId == cartItem.cartProductId
-    ).cartProductQuantity = $event.target.value;
-    localStorage.setItem("cart", JSON.stringify(storedCart));
-  }); // turn this into a function and recall within loop
+  updateItemQuantity(productQuantityInput, cartItem); // Calls event listener function
 
   const deleteItemDiv = document.createElement("div");
   deleteItemDiv.classList.add("cart__item__content__settings__delete");
@@ -101,25 +89,28 @@ function addItemToCartPage(product, cartItem) {
   deleteItem.classList.add("deleteItem");
   deleteItem.textContent = "Delete";
   deleteItemDiv.appendChild(deleteItem);
-  deleteItem.addEventListener("change", ($event) => {
-    let storedCart = JSON.parse(localStorage.getItem("cart"));
-    storedCart
-      .filter((product) => product.cartProductId != cartItem.cartProductId) // instruction here
-      .localStorage.removeItem("cart");
-    localStorage.setItem("cart", JSON.stringify(storedCart));
-  }); // turn this into a function and recall within loop
+  deleteCartItem(deleteItem, cartItem);
 }
 
-// Listens to change event and updates variables accordingly
-// const quantityInput = document.getElementsByClassName("itemQuantity");
+// Listens to change event and updates item quantity in local storage based on user input
+function updateItemQuantity(productQuantityInput, cartItem) {
+  productQuantityInput.addEventListener("change", ($event) => {
+    let storedCart = JSON.parse(localStorage.getItem("cart"));
+    storedCart.find(
+      // This works like a for if statement !
+      (product) => product.cartProductId == cartItem.cartProductId
+    ).cartProductQuantity = $event.target.value;
+    localStorage.setItem("cart", JSON.stringify(storedCart));
+  });
+}
 
-// quantityInput.addEventListener("change", ($event) => {
-//   for (let i = 0; i < storedCart.length; i++) {
-//     if (
-//       cartItem.cartProductColor == storedCart[i].cartProductColor &&
-//       cartItem.cartProductId == storedCart[i].cartProductId
-//     ) {
-//     }
-//   }
-
-// });
+// Listens to click event on delete button and updates item quantity in local storage based on user input
+function deleteCartItem(deleteItem, cartItem) {
+  deleteItem.addEventListener("click", ($event) => {
+    let storedCart = JSON.parse(localStorage.getItem("cart"));
+    storedCart = storedCart.filter(
+      (product) => product.cartProductId != cartItem.cartProductId
+    );
+    localStorage.setItem("cart", JSON.stringify(storedCart));
+  });
+}
