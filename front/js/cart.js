@@ -79,17 +79,47 @@ function addItemToCartPage(product, cartItem) {
 
   const productQuantityInput = document.createElement("input");
   productQuantityInput.setAttribute("type", "number");
-  productQuantityInput.setAttribute("value", cartItem.cartProductQuantity);
+  productQuantityInput.classList.add("itemQuantity");
+  productQuantityInput.setAttribute("name", "itemQuantity");
   productQuantity.setAttribute("min", "1"); // Sets minimum and maximum quantity
   productQuantity.setAttribute("max", "100");
+  productQuantityInput.setAttribute("value", cartItem.cartProductQuantity);
   productSettingsQuantityDiv.appendChild(productQuantityInput);
+  productQuantityInput.addEventListener("change", ($event) => {
+    let storedCart = JSON.parse(localStorage.getItem("cart")); // An array of cartItem objects
+    storedCart.find(
+      // this works like a for if statement !
+      (product) => product.cartProductId == cartItem.cartProductId
+    ).cartProductQuantity = $event.target.value;
+    localStorage.setItem("cart", JSON.stringify(storedCart));
+  }); // turn this into a function and recall within loop
 
   const deleteItemDiv = document.createElement("div");
   deleteItemDiv.classList.add("cart__item__content__settings__delete");
   productSettingsDiv.appendChild(deleteItemDiv);
-
   const deleteItem = document.createElement("p");
   deleteItem.classList.add("deleteItem");
   deleteItem.textContent = "Delete";
   deleteItemDiv.appendChild(deleteItem);
+  deleteItem.addEventListener("change", ($event) => {
+    let storedCart = JSON.parse(localStorage.getItem("cart"));
+    storedCart
+      .filter((product) => product.cartProductId != cartItem.cartProductId) // instruction here
+      .localStorage.removeItem("cart");
+    localStorage.setItem("cart", JSON.stringify(storedCart));
+  }); // turn this into a function and recall within loop
 }
+
+// Listens to change event and updates variables accordingly
+// const quantityInput = document.getElementsByClassName("itemQuantity");
+
+// quantityInput.addEventListener("change", ($event) => {
+//   for (let i = 0; i < storedCart.length; i++) {
+//     if (
+//       cartItem.cartProductColor == storedCart[i].cartProductColor &&
+//       cartItem.cartProductId == storedCart[i].cartProductId
+//     ) {
+//     }
+//   }
+
+// });
