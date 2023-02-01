@@ -1,6 +1,6 @@
 # Kanap
 
-This is the front end and back end server for Project 5 thatI built for the Web Developer path.
+This is the front end and back end server for Project 5 that I built for the Web Developer path.
 
 ### Back end Prerequisites
 
