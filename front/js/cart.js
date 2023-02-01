@@ -1,5 +1,3 @@
-//TODO: [] Make sure delete button deletes item from page instead of just local storage
-
 // Gets cart data from local storage
 const localStorageCart = JSON.parse(localStorage.getItem("cart"));
 console.table(localStorageCart);
@@ -57,7 +55,9 @@ function addItemToCartPage(product, cartItem) {
   productContentDiv.appendChild(productColor);
 
   const productPrice = document.createElement("p");
-  productPrice.textContent = `${product.price * cartItem.cartProductQuantity}€`; // Updates price based on amount selection
+  productPrice.textContent = `${
+    product.price * cartItem.cartProductQuantity
+  } €`; // Updates price based on amount selection
   productContentDiv.appendChild(productPrice);
 
   const productSettingsDiv = document.createElement("div");
@@ -89,7 +89,7 @@ function addItemToCartPage(product, cartItem) {
   deleteItem.classList.add("deleteItem");
   deleteItem.textContent = "Delete";
   deleteItemDiv.appendChild(deleteItem);
-  deleteCartItem(deleteItem, cartItem);
+  deleteCartItem(deleteItem, cartItem, cartContainer, productArticle);
 }
 
 // Listens to change event and updates item quantity in local storage based on user input
@@ -105,12 +105,13 @@ function updateItemQuantity(productQuantityInput, cartItem) {
 }
 
 // Listens to click event on delete button and updates item quantity in local storage based on user input
-function deleteCartItem(deleteItem, cartItem) {
+function deleteCartItem(deleteItem, cartItem, cartContainer, productArticle) {
   deleteItem.addEventListener("click", ($event) => {
     let storedCart = JSON.parse(localStorage.getItem("cart"));
     storedCart = storedCart.filter(
       (product) => product.cartProductId != cartItem.cartProductId
     );
     localStorage.setItem("cart", JSON.stringify(storedCart));
+    cartContainer.removeChild(productArticle);
   });
 }
