@@ -22,6 +22,7 @@ localStorageCart.forEach((cartItem) => {
 
 function addItemToCartPage(product, cartItem) {
   // Accesses first element in HTML collection
+  console.log(product);
   const cartContainer = document.getElementById("cart__items");
   // Adding <article>
   const productArticle = document.createElement("article");
@@ -104,12 +105,16 @@ function updateItemQuantity(productQuantityInput, cartItem) {
   });
 }
 
-// Listens to click event on delete button and updates item quantity in local storage based on user input
+// Listens to click event on delete button and updates item quantity in local storage and in DOM based on user input
 function deleteCartItem(deleteItem, cartItem, cartContainer, productArticle) {
   deleteItem.addEventListener("click", ($event) => {
     let storedCart = JSON.parse(localStorage.getItem("cart"));
+    localStorage.removeItem("cart");
     storedCart = storedCart.filter(
-      (product) => product.cartProductId != cartItem.cartProductId
+      (product) =>
+        product.cartProductId != cartItem.cartProductId ||
+        (product.cartProductId == cartItem.cartProductId &&
+          product.cartProductColor != cartItem.cartProductColor)
     );
     localStorage.setItem("cart", JSON.stringify(storedCart));
     cartContainer.removeChild(productArticle);
