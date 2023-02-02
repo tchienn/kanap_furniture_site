@@ -81,7 +81,14 @@ function addItemToCartPage(product, cartItem) {
   productQuantity.setAttribute("max", "100");
   productQuantityInput.setAttribute("value", cartItem.cartProductQuantity);
   productSettingsQuantityDiv.appendChild(productQuantityInput);
-  updateItemQuantity(productQuantityInput, cartItem); // Calls event listener function
+  // Listens to change event and updates item quantity in local storage based on user input
+  productQuantityInput.addEventListener("change", ($event) => {
+    let storedCart = JSON.parse(localStorage.getItem("cart")); // An array of cartItem objects
+    storedCart.find(
+      (product) => product.cartProductId == cartItem.cartProductId
+    ).cartProductQuantity = $event.target.value;
+    localStorage.setItem("cart", JSON.stringify(storedCart));
+  });
 
   const deleteItemDiv = document.createElement("div");
   deleteItemDiv.classList.add("cart__item__content__settings__delete");
@@ -90,33 +97,26 @@ function addItemToCartPage(product, cartItem) {
   deleteItem.classList.add("deleteItem");
   deleteItem.textContent = "Delete";
   deleteItemDiv.appendChild(deleteItem);
-  deleteCartItem(deleteItem, cartItem, cartContainer, productArticle);
-}
-
-// Listens to change event and updates item quantity in local storage based on user input
-function updateItemQuantity(productQuantityInput, cartItem) {
-  productQuantityInput.addEventListener("change", ($event) => {
-    let storedCart = JSON.parse(localStorage.getItem("cart"));
-    storedCart.find(
-      // This works like a for if statement !
-      (product) => product.cartProductId == cartItem.cartProductId
-    ).cartProductQuantity = $event.target.value;
-    localStorage.setItem("cart", JSON.stringify(storedCart));
-  });
-}
-
-// Listens to click event on delete button and updates item quantity in local storage and in DOM based on user input
-function deleteCartItem(deleteItem, cartItem, cartContainer, productArticle) {
-  deleteItem.addEventListener("click", ($event) => {
-    let storedCart = JSON.parse(localStorage.getItem("cart"));
+  // Listens to click event on delete button and updates item quantity in local storage and in DOM based on user input
+  deleteItem.addEventListener("click", (event) =>
+    deleteCartItem(cartItem, event)
+  );
+  function deleteCartItem(cartItem, event) {
+    const cart = JSON.parse(localStorage.getItem("cart"));
     localStorage.removeItem("cart");
-    storedCart = storedCart.filter(
-      (product) =>
-        product.cartProductId != cartItem.cartProductId ||
-        (product.cartProductId == cartItem.cartProductId &&
-          product.cartProductColor != cartItem.cartProductColor)
-    );
-    localStorage.setItem("cart", JSON.stringify(storedCart));
-    cartContainer.removeChild(productArticle);
-  });
+    const filtered = [];
+    for (const item of cart) {
+      if (
+        item.cartProductId !== cartItem.cartProductId ||
+        (item.cartProductId === cartItem.cartProductId &&
+          item.cartProductColor !== cartItem.cartProductColor)
+      ) {
+        filtered.push(item);
+      }
+    }
+    localStorage.setItem("cart", JSON.stringify(filtered));
+
+    const domItem = event.target.closest(".cart__item");
+    domItem.remove();
+  }
 }
