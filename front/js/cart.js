@@ -5,9 +5,6 @@ console.table(localStorageCart);
 // Build and append product cards to DOM
 let uri;
 localStorageCart.forEach((cartItem) => {
-  console.log(cartItem);
-  console.log(cartItem.cartProductId);
-
   uri = "http://localhost:3000/api/products/" + cartItem.cartProductId; // Gets URL with product ID
 
   // Fetch product information object from API
@@ -22,9 +19,7 @@ localStorageCart.forEach((cartItem) => {
 
 function addItemToCartPage(product, cartItem) {
   // Accesses first element in HTML collection
-  console.log(product);
   const cartContainer = document.getElementById("cart__items");
-  // Adding <article>
   const productArticle = document.createElement("article");
   productArticle.classList.add("cart__item");
   productArticle.setAttribute("data-id", product.id);
@@ -119,4 +114,47 @@ function addItemToCartPage(product, cartItem) {
     const domItem = event.target.closest(".cart__item");
     domItem.remove();
   }
+
+  const totalQuantitySpan = document.getElementById("totalQuantity");
+  let totalQuantity = 0;
+  for (let i = 0; i < parseInt(localStorageCart.length); i++) {
+    totalQuantity += parseInt(localStorageCart[i].cartProductQuantity);
+  }
+  totalQuantitySpan.textContent = `${totalQuantity}`;
 }
+
+// Collecting form data submitted by user
+// const submit = document.getElementById("order");
+// submit.addEventListener("click", ($event) => {
+//   $event.preventDefault(); // Prevents default page refresh
+//   const form = document.querySelector(".cart__order__form");
+//   const firstName = form.elements["firstName"].value;
+//   const lastName = form.elements["lastName"].value;
+//   const address = form.elements["address"].value;
+//   const city = form.elements["city"].value;
+//   const email = form.elements["email"].value;
+
+//   const data = {
+//     contact: {
+//       firstName,
+//       lastName,
+//       address,
+//       city,
+//       email,
+//     },
+//     products: getProductIdsFromCart(),
+//   };
+
+//   console.log(data);
+//   sendFormData(data);
+// });
+
+// function getProductIdsFromCart() {
+//   const shoppingCart = JSON.parse(localStorage.getItem("cart"));
+//   const productIds = [];
+//   for (const item of shoppingCart) {
+//     productIDs.push(item.cartProductId);
+//   }
+
+//   return productIds;
+// }
