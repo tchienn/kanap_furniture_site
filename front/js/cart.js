@@ -4,6 +4,9 @@ console.table(localStorageCart);
 
 // Build and append product cards to DOM
 let uri;
+let totalQuantity = 0; // For calculating running sum of item quantity
+let totalPrice = 0; // For calculating running sum of total price
+
 localStorageCart.forEach((cartItem) => {
   uri = "http://localhost:3000/api/products/" + cartItem.cartProductId; // Gets URL with product ID
 
@@ -51,9 +54,8 @@ function addItemToCartPage(product, cartItem) {
   productContentDiv.appendChild(productColor);
 
   const productPrice = document.createElement("p");
-  productPrice.textContent = `${
-    product.price * cartItem.cartProductQuantity
-  } €`; // Updates price based on amount selection
+  productPriceNumber = product.price * parseInt(cartItem.cartProductQuantity);
+  productPrice.textContent = `${productPriceNumber} €`; // Updates price based on amount selection
   productContentDiv.appendChild(productPrice);
 
   const productSettingsDiv = document.createElement("div");
@@ -116,11 +118,12 @@ function addItemToCartPage(product, cartItem) {
   }
 
   const totalQuantitySpan = document.getElementById("totalQuantity");
-  let totalQuantity = 0;
-  for (let i = 0; i < parseInt(localStorageCart.length); i++) {
-    totalQuantity += parseInt(localStorageCart[i].cartProductQuantity);
-  }
+  totalQuantity += parseInt(cartItem.cartProductQuantity); // Element in localStorageCart object needs to be parsed as an integer
   totalQuantitySpan.textContent = `${totalQuantity}`;
+
+  const totalPriceSpan = document.getElementById("totalPrice");
+  totalPrice += productPriceNumber;
+  totalPriceSpan.textContent = `${totalPrice}`;
 }
 
 // Collecting form data submitted by user
