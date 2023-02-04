@@ -86,3 +86,11 @@ addToCart.addEventListener("click", () => {
 
   console.log(storedCart);
 });
+
+// // Adds cart icon to page title
+// let cartCount = 0;
+
+// function addToCart() {
+//   cartCount++;
+//   document.title = `(${cartCount}) My Store`;
+// } //cart__counter
