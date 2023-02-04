@@ -74,8 +74,8 @@ function addItemToCartPage(product, cartItem) {
   productQuantityInput.setAttribute("type", "number");
   productQuantityInput.classList.add("itemQuantity");
   productQuantityInput.setAttribute("name", "itemQuantity");
-  productQuantity.setAttribute("min", "1"); // Sets minimum and maximum quantity
-  productQuantity.setAttribute("max", "100");
+  productQuantityInput.setAttribute("min", "1"); // Sets minimum and maximum quantities
+  productQuantityInput.setAttribute("max", "100");
   productQuantityInput.setAttribute("value", cartItem.cartProductQuantity);
   productSettingsQuantityDiv.appendChild(productQuantityInput);
   // Listens to change event and updates item quantity in local storage based on user input
@@ -120,10 +120,32 @@ function addItemToCartPage(product, cartItem) {
   const totalQuantitySpan = document.getElementById("totalQuantity");
   totalQuantity += parseInt(cartItem.cartProductQuantity); // Element in localStorageCart object needs to be parsed as an integer
   totalQuantitySpan.textContent = `${totalQuantity}`;
+  // Listens to change event and updates item quantity on page based on user input
+  productQuantityInput.addEventListener("change", ($event) => {
+    const updatedQuantity =
+      parseInt(productQuantityInput.value) - cartItem.cartProductQuantity;
+    totalQuantity += updatedQuantity;
+    totalQuantitySpan.textContent = `${totalQuantity}`;
+    let storedCart = JSON.parse(localStorage.getItem("cart")); // An array of cartItem objects
+    storedCart.find(
+      (product) =>
+        product.cartProductId == cartItem.cartProductId &&
+        product.cartProductColor == cartItem.cartProductColor
+    ).cartProductQuantity += parseInt(updatedQuantity);
+    localStorage.setItem("cart", JSON.stringify(storedCart));
+  });
 
-  const totalPriceSpan = document.getElementById("totalPrice");
-  totalPrice += productPriceNumber;
-  totalPriceSpan.textContent = `${totalPrice}`;
+  // const totalPriceSpan = document.getElementById("totalPrice");
+  // totalPrice += productPriceNumber;
+  // totalPriceSpan.textContent = `${totalPrice}`;
+  // Listens to change event and updates item quantity on page based on user input
+  // productQuantityInput.addEventListener("change", ($event) => {
+  //   let storedCart = JSON.parse(localStorage.getItem("cart")); // An array of cartItem objects
+  //   storedCart.find(
+  //     (product) => product.cartProductId == cartItem.cartProductId
+  //   ).cartProductQuantity = $event.target.value;
+  //   localStorage.setItem("cart", JSON.stringify(storedCart));
+  // });
 }
 
 // Collecting form data submitted by user
