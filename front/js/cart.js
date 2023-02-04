@@ -99,63 +99,70 @@ function addItemToCartPage(product, cartItem) {
   totalPriceSpan.textContent = `${totalPrice}`;
 
   // Listens to change event and updates
-  productQuantityInput.addEventListener("change", (event) => {
-    changeCartItem(cartItem, event);
+  productQuantityInput.addEventListener("change", ($event) => {
+    changeCartItem(cartItem, $event);
   });
+
   // Listens to click event on delete button and updates item quantity in local storage and in DOM based on user input
-  deleteItem.addEventListener("click", (event) =>
-    deleteCartItem(cartItem, event)
+  deleteItem.addEventListener("click", ($event) =>
+    deleteCartItem(cartItem, $event)
   );
 
-  function changeCartItem(cartItem, event) {
-    // Task 1 : Update total item price on page
+  function changeCartItem(cartItem, $event) {
+    // Update total item price on page
     productPrice.textContent = `${
-      product.price * parseInt(event.target.value)
-    } €`; // Updates price based on amount selection
+      product.price * parseInt($event.target.value)
+    } €`; // Update price based on amount selection
+
+    // Update total quantity on page
+    totalQuantitySpan.textContent = `${
+      parseInt(totalQuantitySpan.textContent) -
+      parseInt(cartItem.cartProductQuantity) +
+      parseInt($event.target.value)
+    }`;
+
+    // Update total price on page
+    totalPriceSpan.textContent = `${
+      parseInt(totalPriceSpan.textContent) -
+      product.price * parseInt(cartItem.cartProductQuantity) +
+      product.price * parseInt($event.target.value)
+    }`;
+
+    // Update item quantity in local storage
+    cartItem.cartProductQuantity = $event.target.value;
+    localStorage.setItem("cart", JSON.stringify(localStorageCart));
+  }
+  function deleteCartItem(cartItem, $event) {
+    // Task 1 : Remove item from DOM
+    const domItem = $event.target.closest(".cart__item");
+    domItem.remove();
 
     // Task 2 : Update total quantity on page
     totalQuantitySpan.textContent = `${
       parseInt(totalQuantitySpan.textContent) -
-      parseInt(cartItem.cartProductQuantity) +
-      parseInt(event.target.value)
+      parseInt(cartItem.cartProductQuantity)
     }`;
 
     // Task 3 : Update total price on page
     totalPriceSpan.textContent = `${
       parseInt(totalPriceSpan.textContent) -
-      product.price * parseInt(cartItem.cartProductQuantity) +
-      product.price * parseInt(event.target.value)
+      product.price * parseInt(cartItem.cartProductQuantity)
     }`;
 
-    // Task 4 : Update item quantity in local storage
-    cartItem.cartProductQuantity = event.target.value;
-    localStorage.setItem("cart", JSON.stringify(localStorageCart));
-  }
-  function deleteCartItem(cartItem, event) {
-    const cart = JSON.parse(localStorage.getItem("cart"));
-    // localStorage.removeItem("cart");
-    // const filtered = [];
-    // for (const item of cart) {
-    //   if (
-    //     item.cartProductId !== cartItem.cartProductId ||
-    //     (item.cartProductId === cartItem.cartProductId &&
-    //       item.cartProductColor !== cartItem.cartProductColor)
-    //   ) {
-    //     filtered.push(item);
-    //   }
-    // }
-    // localStorage.setItem("cart", JSON.stringify(filtered));
-
-    // Task 1 : Remove item from page
-
-    // Task 2 : Update total quantity on page
-
-    // Task 3 : Update total price on page
-
     // Task 4 : Remove item from local storage
-
-    // const domItem = event.target.closest(".cart__item");
-    // domItem.remove();
+    const cart = JSON.parse(localStorage.getItem("cart"));
+    localStorage.removeItem("cart");
+    const filtered = [];
+    for (const item of cart) {
+      if (
+        item.cartProductId !== cartItem.cartProductId ||
+        (item.cartProductId === cartItem.cartProductId &&
+          item.cartProductColor !== cartItem.cartProductColor)
+      ) {
+        filtered.push(item);
+      }
+    }
+    localStorage.setItem("cart", JSON.stringify(filtered));
   }
 }
 
