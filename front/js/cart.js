@@ -133,23 +133,23 @@ function addItemToCartPage(product, cartItem) {
     localStorage.setItem("cart", JSON.stringify(localStorageCart));
   }
   function deleteCartItem(cartItem, $event) {
-    // Task 1 : Remove item from DOM
+    // Remove item from DOM
     const domItem = $event.target.closest(".cart__item");
     domItem.remove();
 
-    // Task 2 : Update total quantity on page
+    // Update total quantity on page
     totalQuantitySpan.textContent = `${
       parseInt(totalQuantitySpan.textContent) -
       parseInt(cartItem.cartProductQuantity)
     }`;
 
-    // Task 3 : Update total price on page
+    // Update total price on page
     totalPriceSpan.textContent = `${
       parseInt(totalPriceSpan.textContent) -
       product.price * parseInt(cartItem.cartProductQuantity)
     }`;
 
-    // Task 4 : Remove item from local storage
+    // Remove item from local storage
     const cart = JSON.parse(localStorage.getItem("cart"));
     localStorage.removeItem("cart");
     const filtered = [];
@@ -166,38 +166,39 @@ function addItemToCartPage(product, cartItem) {
   }
 }
 
-// Collecting form data submitted by user
-// const submit = document.getElementById("order");
-// submit.addEventListener("click", ($event) => {
-//   $event.preventDefault(); // Prevents default page refresh
-//   const form = document.querySelector(".cart__order__form");
-//   const firstName = form.elements["firstName"].value;
-//   const lastName = form.elements["lastName"].value;
-//   const address = form.elements["address"].value;
-//   const city = form.elements["city"].value;
-//   const email = form.elements["email"].value;
+// Collect form data submitted by user
+const submit = document.getElementById("order");
+submit.addEventListener("click", ($event) => {
+  $event.preventDefault(); // Prevents default page refresh
+  const form = document.querySelector(".cart__order__form");
+  const firstName = form.elements["firstName"].value;
+  const lastName = form.elements["lastName"].value;
+  const address = form.elements["address"].value;
+  const city = form.elements["city"].value;
+  const email = form.elements["email"].value;
 
-//   const data = {
-//     contact: {
-//       firstName,
-//       lastName,
-//       address,
-//       city,
-//       email,
-//     },
-//     products: getProductIdsFromCart(),
-//   };
+  const data = {
+    contact: {
+      firstName,
+      lastName,
+      address,
+      city,
+      email,
+    },
+    products: getProductIdsFromCart(),
+  };
 
-//   console.log(data);
-//   sendFormData(data);
-// });
+  console.log(data);
+  sendFormData(data); // I need to write this fn (POST???)
+});
 
-// function getProductIdsFromCart() {
-//   const shoppingCart = JSON.parse(localStorage.getItem("cart"));
-//   const productIds = [];
-//   for (const item of shoppingCart) {
-//     productIDs.push(item.cartProductId);
-//   }
+function getProductIdsFromCart() {
+  const shoppingCart = JSON.parse(localStorage.getItem("cart"));
+  const productIds = [];
+  for (const item of shoppingCart) {
+    productIDs.push(item.cartProductId);
+  }
 
-//   return productIds;
-// }
+  return productIds;
+  // clear localS here?
+}
