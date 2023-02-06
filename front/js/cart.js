@@ -196,6 +196,7 @@ submit.addEventListener("click", ($event) => {
 });
 
 function getProductIdsFromCart() {
+  // Creates product table
   const shoppingCart = JSON.parse(localStorage.getItem("cart"));
   const productIds = [];
   for (const item of shoppingCart) {
@@ -222,7 +223,7 @@ function sendFormData(sendFormData) {
       return response.json();
     })
     .then((data) => {
-      window.location.href = `confirmation.html?id=${data.orderId}`;
+      window.location.href = `confirmation.html?orderId=${data.orderId}`;
       localStorage.clear(); // Clears cart contents from local storage because user has already ourchased
     })
     .catch((err) => console.error(err));

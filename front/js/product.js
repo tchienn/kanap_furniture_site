@@ -1,5 +1,3 @@
-const { response } = require("express");
-
 // URLSearchParams
 const queryString = window.location.search; // Returns the entire parameter sting
 const urlParams = new URLSearchParams(queryString);
@@ -93,7 +91,7 @@ addToCart.addEventListener("click", () => {
 
   console.log(storedCart);
 
-  // Adds a font awesome filled cart icon to cart link in header if an item is added to the cart!
+  // Adds a font awesome filled cart icon to cart link in header if an item is added to the cart
   let cartCount = storedCart.length;
 
   if (cartCount > 0) {
