@@ -203,5 +203,5 @@ function getProductIdsFromCart() {
   }
 
   return productIds;
-  // clear localS here?
+  // clear localS here? localStorage.clear();
 }

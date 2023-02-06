@@ -32,6 +32,11 @@ function createProduct(product) {
   // Loop to select product color from array
   product.colors.forEach((color) => {
     const select = document.getElementById("colors"); // Gets dropdown select element
+    select.addEventListener("change", () => {
+      // Refreshes quantity to 0 when user changes the color of the item they want to select
+      quantity = document.getElementById("quantity");
+      quantity.value = 0;
+    });
     const colorOption = document.createElement("option");
     colorOption.value = color; // Assigns color from array to option element
     colorOption.textContent = color;
