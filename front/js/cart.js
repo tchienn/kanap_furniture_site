@@ -180,7 +180,7 @@ submit.addEventListener("click", ($event) => {
   const city = form.elements["city"].value;
   const email = form.elements["email"].value;
 
-  const data = {
+  const contact = {
     contact: {
       firstName,
       lastName,
@@ -191,17 +191,39 @@ submit.addEventListener("click", ($event) => {
     products: getProductIdsFromCart(),
   };
 
-  console.log(data);
-  sendFormData(data); // I need to write this fn (POST???)
+  console.log(contact);
+  sendFormData(contact);
 });
 
 function getProductIdsFromCart() {
   const shoppingCart = JSON.parse(localStorage.getItem("cart"));
   const productIds = [];
   for (const item of shoppingCart) {
-    productIDs.push(item.cartProductId);
+    productIds.push(item.cartProductId);
   }
 
   return productIds;
-  // clear localS here? localStorage.clear();
+}
+
+function sendFormData(sendFormData) {
+  const sendFormToBack = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(sendFormData),
+  };
+
+  fetch("http://localhost:3000/api/products/order", sendFormToBack)
+    .then((response) => {
+      if (!response.ok) {
+        throw Error(response.status);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      window.location.href = `confirmation.html?id=${data.orderId}`;
+      localStorage.clear(); // Clears cart contents from local storage because user has already ourchased
+    })
+    .catch((err) => console.error(err));
 }

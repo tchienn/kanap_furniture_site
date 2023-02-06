@@ -1,3 +1,5 @@
+const { response } = require("express");
+
 // URLSearchParams
 const queryString = window.location.search; // Returns the entire parameter sting
 const urlParams = new URLSearchParams(queryString);
