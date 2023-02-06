@@ -168,9 +168,12 @@ function addItemToCartPage(product, cartItem) {
 
 // Collect form data submitted by user
 const submit = document.getElementById("order");
+
+// User's form input saved and sent to API on click
 submit.addEventListener("click", ($event) => {
   $event.preventDefault(); // Prevents default page refresh
   const form = document.querySelector(".cart__order__form");
+  // Retrieve user form data
   const firstName = form.elements["firstName"].value;
   const lastName = form.elements["lastName"].value;
   const address = form.elements["address"].value;
