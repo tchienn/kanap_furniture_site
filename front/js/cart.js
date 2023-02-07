@@ -186,32 +186,47 @@ submit.addEventListener("click", ($event) => {
   // Retrieve user form data
   $event.preventDefault(); // Prevents default page refresh
   const form = document.querySelector(".cart__order__form");
+
+  let isDataCorrect = true;
+
   const firstName = form.elements["firstName"].value;
   if (!wordPattern.test(firstName)) {
-    return showErrorMessage("firstNameErrorMsg", "Please enter a valid name");
+    showErrorMessage("firstNameErrorMsg", "Please enter a valid name");
+    isDataCorrect = false;
+  } else {
+    showErrorMessage("firstNameErrorMsg", "");
   }
 
   const lastName = form.elements["lastName"].value;
   if (!wordPattern.test(lastName)) {
-    return showErrorMessage("lastNameErrorMsg", "Please enter a valid name");
+    showErrorMessage("lastNameErrorMsg", "Please enter a valid name");
+    isDataCorrect = false;
+  } else {
+    showErrorMessage("lastNameErrorMsg", "");
   }
 
   const address = form.elements["address"].value;
   if (!addressPattern.test(address)) {
-    return showErrorMessage("addressErrorMsg", "Please enter a valid address");
+    showErrorMessage("addressErrorMsg", "Please enter a valid address");
+    isDataCorrect = false;
+  } else {
+    showErrorMessage("addressErrorMsg", "");
   }
 
   const city = form.elements["city"].value;
   if (!wordPattern.test(city)) {
-    return showErrorMessage("cityErrorMsg", "Please enter a valid city");
+    showErrorMessage("cityErrorMsg", "Please enter a valid city");
+    isDataCorrect = false;
+  } else {
+    showErrorMessage("cityErrorMsg", "");
   }
 
   const email = form.elements["email"].value;
   if (!emailPattern.test(email)) {
-    return showErrorMessage(
-      "emailErrorMsg",
-      "Please enter a valid email address"
-    );
+    showErrorMessage("emailErrorMsg", "Please enter a valid email address");
+    isDataCorrect = false;
+  } else {
+    showErrorMessage("emailErrorMsg", "");
   }
 
   const contact = {
@@ -226,7 +241,9 @@ submit.addEventListener("click", ($event) => {
   };
 
   console.log(contact);
-  sendFormData(contact);
+  if (isDataCorrect == true) {
+    sendFormData(contact);
+  }
 });
 
 function getProductIdsFromCart() {
