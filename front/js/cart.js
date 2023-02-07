@@ -166,6 +166,14 @@ function addItemToCartPage(product, cartItem) {
   }
 }
 
+// Use RegEx to control form data input by user
+let wordPattern = /^[a-zA-Z]+$/;
+let addressPattern =
+  /^\d+\s[A-Za-z]+\s[A-Za-z]+\s[A-Za-z]+\s[A-Za-z]+\s[A-Za-z]+$/;
+let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+// Create function here-----
+
 // Collect form data submitted by user
 const submit = document.getElementById("order");
 
@@ -179,6 +187,11 @@ submit.addEventListener("click", ($event) => {
   const address = form.elements["address"].value;
   const city = form.elements["city"].value;
   const email = form.elements["email"].value;
+  if (!emailPattern.test(email)) {
+    const emailErrorPara = document.getElementById("emailErrorMsg");
+    emailErrorPara.textContent = "Please enter a valid email address";
+    return false;
+  }
 
   const contact = {
     contact: {
