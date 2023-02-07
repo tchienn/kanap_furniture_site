@@ -166,31 +166,52 @@ function addItemToCartPage(product, cartItem) {
   }
 }
 
-// Use RegEx to control form data input by user
-let wordPattern = /^[a-zA-Z]+$/;
-let addressPattern =
-  /^\d+\s[A-Za-z]+\s[A-Za-z]+\s[A-Za-z]+\s[A-Za-z]+\s[A-Za-z]+$/;
-let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+// Function to display error message
+function showErrorMessage(elementId, message) {
+  const errorPara = document.getElementById(elementId);
+  errorPara.textContent = message;
+  return false;
+}
 
-// Create function here-----
+// Use RegEx to control form data input by user and submit only if these conditions are fulfilled
+let wordPattern = /^[a-zA-Z]+$/;
+let addressPattern = /^[A-Za-z-0-99999999]/;
+let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 // Collect form data submitted by user
 const submit = document.getElementById("order");
 
 // User's form input saved and sent to API on click
 submit.addEventListener("click", ($event) => {
+  // Retrieve user form data
   $event.preventDefault(); // Prevents default page refresh
   const form = document.querySelector(".cart__order__form");
-  // Retrieve user form data
   const firstName = form.elements["firstName"].value;
+  if (!wordPattern.test(firstName)) {
+    return showErrorMessage("firstNameErrorMsg", "Please enter a valid name");
+  }
+
   const lastName = form.elements["lastName"].value;
+  if (!wordPattern.test(lastName)) {
+    return showErrorMessage("lastNameErrorMsg", "Please enter a valid name");
+  }
+
   const address = form.elements["address"].value;
+  if (!addressPattern.test(address)) {
+    return showErrorMessage("addressErrorMsg", "Please enter a valid address");
+  }
+
   const city = form.elements["city"].value;
+  if (!wordPattern.test(city)) {
+    return showErrorMessage("cityErrorMsg", "Please enter a valid city");
+  }
+
   const email = form.elements["email"].value;
   if (!emailPattern.test(email)) {
-    const emailErrorPara = document.getElementById("emailErrorMsg");
-    emailErrorPara.textContent = "Please enter a valid email address";
-    return false;
+    return showErrorMessage(
+      "emailErrorMsg",
+      "Please enter a valid email address"
+    );
   }
 
   const contact = {
