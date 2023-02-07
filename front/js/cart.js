@@ -279,3 +279,6 @@ function sendFormData(sendFormData) {
     })
     .catch((err) => console.error(err));
 }
+
+// Updating cart icon
+updateCartIcon();

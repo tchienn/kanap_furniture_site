@@ -37,3 +37,6 @@ function insertProducts(products) {
     productCard.appendChild(productDescription);
   });
 }
+
+// Updating cart icon
+updateCartIcon();
