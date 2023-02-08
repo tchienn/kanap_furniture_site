@@ -1,3 +1,7 @@
+// Imports function and calls it
+import { updateCartCount } from "./fun.js";
+updateCartCount();
+
 // Fetch JSON array by making HTTP GET request to API endpoint
 const uri = "http://localhost:3000/api/products";
 
@@ -8,9 +12,9 @@ fetch(uri)
   .then((products) => {
     insertProducts(products);
   })
-  .catch((err) => console.error(err)); // Handle error
+  .catch((err) => console.error(err));
 
-// Iterate over each element in the JSON array from API
+// Function iterates over each element in the JSON array retrieved from API and adds information to DOM
 function insertProducts(products) {
   const productsContainer = document.getElementById("items"); // Get existing DOM element where I will insert product cards
   products.forEach((product) => {
@@ -37,6 +41,3 @@ function insertProducts(products) {
     productCard.appendChild(productDescription);
   });
 }
-
-// Updating cart icon
-updateCartIcon();

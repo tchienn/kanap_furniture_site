@@ -1,6 +1,9 @@
+// Imports function and calls it
+import { updateCartCount } from "./fun.js";
+updateCartCount();
+
 // Gets cart data from local storage
 const localStorageCart = JSON.parse(localStorage.getItem("cart"));
-console.table(localStorageCart);
 
 // Build and append product cards to DOM
 let uri;
@@ -20,8 +23,8 @@ localStorageCart.forEach((cartItem) => {
     .catch((err) => console.error(err));
 });
 
+// Function iterates over each element in the JSON array retrieved from API and adds information to DOM
 function addItemToCartPage(product, cartItem) {
-  // Accesses first element in HTML collection
   const cartContainer = document.getElementById("cart__items");
   const productArticle = document.createElement("article");
   productArticle.classList.add("cart__item");
@@ -56,7 +59,7 @@ function addItemToCartPage(product, cartItem) {
   const productPrice = document.createElement("p");
   productPrice.textContent = `${
     product.price * parseInt(cartItem.cartProductQuantity)
-  } €`; // Updates price based on amount selection
+  } €`; // Updates price based on quantity selected
   productContentDiv.appendChild(productPrice);
 
   const productSettingsDiv = document.createElement("div");
@@ -98,7 +101,7 @@ function addItemToCartPage(product, cartItem) {
   totalPrice += product.price * parseInt(cartItem.cartProductQuantity); // Element in localStorageCart object needs to be parsed as an integer
   totalPriceSpan.textContent = `${totalPrice}`;
 
-  // Listens to change event and updates
+  // Listens to change event and updates DOM
   productQuantityInput.addEventListener("change", ($event) => {
     changeCartItem(cartItem, $event);
   });
@@ -108,30 +111,33 @@ function addItemToCartPage(product, cartItem) {
     deleteCartItem(cartItem, $event)
   );
 
+  // Function updates item price, total price, and article totals on page based on quantity selected
   function changeCartItem(cartItem, $event) {
-    // Update total item price on page
+    // Updates item total based on quantity selected
     productPrice.textContent = `${
       product.price * parseInt($event.target.value)
-    } €`; // Update price based on amount selection
+    } €`;
 
-    // Update total quantity on page
+    // Updates total quantity on page
     totalQuantitySpan.textContent = `${
       parseInt(totalQuantitySpan.textContent) -
       parseInt(cartItem.cartProductQuantity) +
       parseInt($event.target.value)
     }`;
 
-    // Update total price on page
+    // Updates total price on page
     totalPriceSpan.textContent = `${
       parseInt(totalPriceSpan.textContent) -
       product.price * parseInt(cartItem.cartProductQuantity) +
       product.price * parseInt($event.target.value)
     }`;
 
-    // Update item quantity in local storage
+    // Updates item quantity in local storage
     cartItem.cartProductQuantity = $event.target.value;
     localStorage.setItem("cart", JSON.stringify(localStorageCart));
   }
+
+  // Function deletes item from page
   function deleteCartItem(cartItem, $event) {
     // Remove item from DOM
     const domItem = $event.target.closest(".cart__item");
@@ -175,8 +181,8 @@ function showErrorMessage(elementId, message) {
 
 // Use RegEx to control form data input by user and submit only if these conditions are fulfilled
 let wordPattern = /^[a-zA-Z]+$/;
-let addressPattern = /^[A-Za-z-0-99999999]/;
-let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+let addressPattern = /^[a-zA-Z0-9]/;
+let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/;
 
 // Collect form data submitted by user
 const submit = document.getElementById("order");
@@ -187,6 +193,7 @@ submit.addEventListener("click", ($event) => {
   $event.preventDefault(); // Prevents default page refresh
   const form = document.querySelector(".cart__order__form");
 
+  // Validates data based on response to RegEx matcher
   let isDataCorrect = true;
 
   const firstName = form.elements["firstName"].value;
@@ -229,8 +236,9 @@ submit.addEventListener("click", ($event) => {
     showErrorMessage("emailErrorMsg", "");
   }
 
-  const contact = {
+  const formData = {
     contact: {
+      // The contact object
       firstName,
       lastName,
       address,
@@ -240,14 +248,13 @@ submit.addEventListener("click", ($event) => {
     products: getProductIdsFromCart(),
   };
 
-  console.log(contact);
   if (isDataCorrect == true) {
-    sendFormData(contact);
+    sendFormData(formData); // Will submit form data only if all input conditions are met
   }
 });
 
+// Function creates product table
 function getProductIdsFromCart() {
-  // Creates product table
   const shoppingCart = JSON.parse(localStorage.getItem("cart"));
   const productIds = [];
   for (const item of shoppingCart) {
@@ -257,6 +264,7 @@ function getProductIdsFromCart() {
   return productIds;
 }
 
+// Function sends POST request to server (sends form data)
 function sendFormData(sendFormData) {
   const sendFormToBack = {
     method: "POST",
@@ -266,19 +274,17 @@ function sendFormData(sendFormData) {
     body: JSON.stringify(sendFormData),
   };
 
+  // Retrieves response (Order number)
   fetch("http://localhost:3000/api/products/order", sendFormToBack)
     .then((response) => {
       if (!response.ok) {
-        throw Error(response.status);
+        throw Error(response.status); // May be unnecessary
       }
       return response.json();
     })
     .then((data) => {
       window.location.href = `confirmation.html?orderId=${data.orderId}`;
-      localStorage.clear(); // Clears cart contents from local storage because user has already ourchased
+      localStorage.clear(); // Clears cart contents from local storage
     })
     .catch((err) => console.error(err));
 }
-
-// Updating cart icon
-updateCartIcon();

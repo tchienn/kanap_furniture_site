@@ -1,11 +1,15 @@
+// Imports function and calls it
+import { updateCartCount } from "./fun.js";
+updateCartCount();
+
 // URLSearchParams
 const queryString = window.location.search; // Returns the entire parameter sting
 const urlParams = new URLSearchParams(queryString);
-const productId = urlParams.get("id"); // Get product ID from string
+const productId = urlParams.get("id"); // Gets product ID from string
 
 const uri = "http://localhost:3000/api/products/" + productId; // Gets relevant URL with product ID
 
-// Fetch product information object from API
+// Fetches product information object from API
 fetch(uri)
   .then((res) => {
     return res.json();
@@ -13,6 +17,7 @@ fetch(uri)
   .then((product) => createProduct(product))
   .catch((err) => console.error(err));
 
+// Function iterates over each element in the JSON array retrieved from API and adds information to DOM
 function createProduct(product) {
   const imgContainer = document.getElementsByClassName("item__img")[0]; // Accesses first element in HTML collection
   const productImg = document.createElement("img");
@@ -31,7 +36,7 @@ function createProduct(product) {
 
   // Loop to select product color from array
   product.colors.forEach((color) => {
-    const select = document.getElementById("colors"); // Gets dropdown select element
+    const select = document.getElementById("colors");
     select.addEventListener("change", () => {
       // Refreshes quantity to 0 when user changes the color of the item they want to select
       quantity = document.getElementById("quantity");
@@ -40,7 +45,7 @@ function createProduct(product) {
     const colorOption = document.createElement("option");
     colorOption.value = color; // Assigns color from array to option element
     colorOption.textContent = color;
-    select.appendChild(colorOption); // Appends color list to dropdown
+    select.appendChild(colorOption);
   });
 }
 
@@ -57,9 +62,9 @@ function updateStoredCart(storedCart, cartItem) {
       cartItem.cartProductId == storedCart[i].cartProductId
     ) {
       storedCart[i].cartProductQuantity =
-        parseInt(storedCart[i].cartProductQuantity) + // Converts to integer (due to localStorage bug)
+        parseInt(storedCart[i].cartProductQuantity) +
         parseInt(cartItem.cartProductQuantity); // Adds to product quantity because item already exists in cart
-      return; // Ends function, task is complete
+      return; // Ends function when task is complete
     }
   }
   storedCart.push(cartItem); // Push new item to the array
@@ -77,7 +82,7 @@ addToCart.addEventListener("click", () => {
     cartProductQuantity: quantity.value,
   };
 
-  // Add items to local storage
+  // Add items to Local Storage
   let storedCart = JSON.parse(localStorage.getItem("cart")); // An array of cartItem objects
 
   if (storedCart == null) {
@@ -89,8 +94,5 @@ addToCart.addEventListener("click", () => {
     localStorage.setItem("cart", JSON.stringify(storedCart));
   }
 
-  console.log(storedCart);
-  updateCartIcon();
+  updateCartCount();
 });
-
-updateCartIcon();
