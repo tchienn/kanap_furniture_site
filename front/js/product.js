@@ -17,7 +17,7 @@ fetch(uri)
   .then((product) => createProduct(product))
   .catch((err) => console.error(err));
 
-// Function iterates over each element in the JSON array retrieved from API and adds information to DOM
+// Function iterates over each element in the JSON array retrieved from API and adds product information to DOM
 function createProduct(product) {
   const imgContainer = document.getElementsByClassName("item__img")[0]; // Accesses first element in HTML collection
   const productImg = document.createElement("img");

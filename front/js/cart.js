@@ -101,7 +101,7 @@ function addItemToCartPage(product, cartItem) {
   totalPrice += product.price * parseInt(cartItem.cartProductQuantity); // Element in localStorageCart object needs to be parsed as an integer
   totalPriceSpan.textContent = `${totalPrice}`;
 
-  // Listens to change event and updates DOM
+  // Listens to change event and updates DOM based on changeCartItem function declared below
   productQuantityInput.addEventListener("change", ($event) => {
     changeCartItem(cartItem, $event);
   });
@@ -155,7 +155,7 @@ function addItemToCartPage(product, cartItem) {
       product.price * parseInt(cartItem.cartProductQuantity)
     }`;
 
-    // Remove item from local storage
+    // Removes item from local storage
     const cart = JSON.parse(localStorage.getItem("cart"));
     localStorage.removeItem("cart");
     const filtered = [];
@@ -172,7 +172,7 @@ function addItemToCartPage(product, cartItem) {
   }
 }
 
-// Function to display error message
+// Displays error message
 function showErrorMessage(elementId, message) {
   const errorPara = document.getElementById(elementId);
   errorPara.textContent = message;
@@ -187,7 +187,7 @@ let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/;
 // Collect form data submitted by user
 const submit = document.getElementById("order");
 
-// User's form input saved and sent to API on click
+// Users' form input saved and sent to API on click
 submit.addEventListener("click", ($event) => {
   // Retrieve user form data
   $event.preventDefault(); // Prevents default page refresh
@@ -274,7 +274,7 @@ function sendFormData(sendFormData) {
     body: JSON.stringify(sendFormData),
   };
 
-  // Retrieves response (Order number)
+  // Retrieves response (order number)
   fetch("http://localhost:3000/api/products/order", sendFormToBack)
     .then((response) => {
       if (!response.ok) {
