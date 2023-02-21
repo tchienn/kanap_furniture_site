@@ -5,6 +5,12 @@ updateCartCount();
 // Gets cart data from local storage
 const localStorageCart = JSON.parse(localStorage.getItem('cart'));
 
+const form = document.querySelector('.cart__order__form');
+
+if (!localStorageCart || localStorageCart.length === 0) {
+    form.style.display = 'none';
+}
+
 // Build and append product cards to DOM
 let uri;
 let totalQuantity = 0; // To calculate running sum of item quantity
