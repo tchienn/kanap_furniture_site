@@ -40,7 +40,7 @@ function createProduct(product) {
         select.addEventListener('change', () => {
             // Refreshes quantity to 0 when user changes the color of the item they want to select
             quantity = document.getElementById('quantity');
-            quantity.value = 0;
+            quantity.value = 1;
         });
         const colorOption = document.createElement('option');
         colorOption.value = color; // Assigns color from array to option element
@@ -72,17 +72,17 @@ function updateStoredCart(storedCart, cartItem) {
 
 // Listens to click event and stores product values as a variable
 addToCart.addEventListener('click', () => {
-    quantity = document.getElementById('quantity');
-    color = document.getElementById('colors');
-    console.log(color.value);
+    const quantity = document.getElementById('quantity').value;
+    const color = document.getElementById('colors').value;
+    console.log(color);
 
-    if (quantity >= 1 && color != '') {
-        // Ensures color is not empty and quantity is greater than 1
+    // Ensure color is not empty and quantity is greater than 1
+    if (quantity >= 1 && color !== '') {
         // Creates object representing each item that will append to cart array
         let cartItem = {
             cartProductId: productId,
-            cartProductColor: color.value,
-            cartProductQuantity: quantity.value,
+            cartProductColor: color,
+            cartProductQuantity: quantity,
         };
 
         // Add items to Local Storage
@@ -98,5 +98,7 @@ addToCart.addEventListener('click', () => {
         }
 
         updateCartCount();
+    } else {
+        alert('Please select a colour before adding to cart.');
     }
 });
