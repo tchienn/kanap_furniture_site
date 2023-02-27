@@ -171,6 +171,7 @@ function addItemToCartPage(product, cartItem) {
         }
         localStorage.setItem('cart', JSON.stringify(filtered));
         updateCartCount();
+        location.reload();
     }
 }
 
