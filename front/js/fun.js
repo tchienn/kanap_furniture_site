@@ -11,11 +11,11 @@ export function updateCartCount() {
         });
 
         const cartCounter = document.getElementById('cart__counter');
-        cartCounter.innerHTML = ''; // Clear any existing cart count
+        cartCounter.innerHTML = 'Cart '; // Clear any existing cart count
 
         if (cartCount > 0) {
             const cartSpan = document.createElement('span');
-            cartSpan.textContent = `Cart (${cartCount})`; // Inserts cart item number into HTML if there is an item in the cart
+            cartSpan.textContent = `(${cartCount})`; // Inserts cart item number into HTML if there is an item in the cart
             cartCounter.appendChild(cartSpan);
         }
     } catch (err) {

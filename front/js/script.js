@@ -42,7 +42,7 @@ function insertProducts(products) {
 
         const productPrice = document.createElement('p');
         productPrice.classList.add('productPrice');
-        productPrice.textContent = product.price;
+        productPrice.textContent = product.price + '€';
         productPrice.style.fontWeight = '700';
         productCard.appendChild(productPrice);
     });

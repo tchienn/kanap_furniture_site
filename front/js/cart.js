@@ -5,12 +5,6 @@ updateCartCount();
 // Gets cart data from local storage
 const localStorageCart = JSON.parse(localStorage.getItem('cart'));
 
-const form = document.querySelector('.cart__order__form');
-
-if (!localStorageCart || localStorageCart.length === 0) {
-    form.style.display = 'none';
-}
-
 // Build and append product cards to DOM
 let uri;
 let totalQuantity = 0; // To calculate running sum of item quantity
@@ -187,13 +181,24 @@ function showErrorMessage(elementId, message) {
     return false;
 }
 
+// Ensure form is disabled if no items present in cart
+const form = document.querySelector('.cart__order__form');
+// Check if localStorageCart is empty or not
+if (!localStorageCart || localStorageCart.length === 0) {
+    // Disable form
+    form.querySelectorAll('input, textarea, select').forEach((input) => {
+        input.disabled = true;
+    });
+} else {
+    form.querySelectorAll('input, textarea, select').forEach((input) => {
+        input.disabled = false;
+    });
+}
+
 // Use RegEx to control form data input by user and submit only if these conditions are fulfilled
 let wordPattern = /^[a-zA-Z]+$/;
 let addressPattern = /^[a-zA-Z0-9]/;
 let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/;
-
-// Collect form data submitted by user
-const submit = document.getElementById('order');
 
 // Users' form input saved and sent to API on click
 submit.addEventListener('click', ($event) => {
