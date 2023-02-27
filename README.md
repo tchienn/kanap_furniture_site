@@ -2,6 +2,10 @@
 
 This is the front end and back end server for Project 5 that I built for the Web Developer path.
 
+### To view the website, visit the GitHub website
+
+https://tssa017.github.io/kanap_furniture_site/
+
 ### Back end Prerequisites
 
 You will need to have Node and `npm` installed locally on your machine.
